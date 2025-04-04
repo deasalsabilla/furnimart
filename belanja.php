@@ -240,7 +240,7 @@
                                     <div class="single_product_text">
                                         <h4><?php echo htmlspecialchars($row_produk['nm_produk']); ?></h4>
                                         <h3>Rp <?php echo number_format($row_produk['harga'], 0, ',', '.'); ?></h3>
-                                        <a href="detail_produk.php?id=<?php echo $row_produk['id_produk']; ?>" class="add_cart">+ add to cart</a>
+                                        <a href="detail_produk.php?id=<?php echo $row_produk['id_produk']; ?>" class="add_cart">+ keranjang</a>
                                     </div>
                                 </div>
                             </div>

@@ -23,6 +23,12 @@
     <link rel="stylesheet" href="css/magnific-popup.css">
     <!-- style CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .owl-prev,
+        .owl-next {
+            display: none !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -165,7 +171,7 @@
                     <div class="product_slider_img">
                         <div id="vertical">
                             <div data-thumb="admin/produk_img/<?php echo $produk['gambar']; ?>">
-                                <img src="admin/produk_img/<?php echo $produk['gambar']; ?>" />
+                                <img src="admin/produk_img/<?php echo $produk['gambar']; ?>" style="width: 779px; height: 525px; object-fit: cover;" />
                             </div>
                         </div>
                     </div>
@@ -190,7 +196,7 @@
                                     <input class="input-number" type="text" name="qty" value="1" min="1" max="<?php echo $produk['stok']; ?>">
                                     <span class="number-increment"> <i class="ti-plus"></i></span>
                                 </div>
-                                <button type="submit" name="add_to_cart" class="btn_3">Add to Cart</button>
+                                <button type="submit" name="add_to_cart" class="btn_3">Keranjang</button>
                             </div>
                         </form>
 
@@ -255,11 +261,10 @@
 
             <div class="row align-items-center justify-content-between">
                 <div class="col-lg-12">
-                    <h3 class="text-center mb-4">Produk Lainnya</h3>
                     <div class="best_product_slider owl-carousel">
                         <?php while ($produk_lain = $result_produk_lain->fetch_assoc()) { ?>
                             <div class="single_product_item">
-                                <img src="admin/produk_img/<?php echo $produk_lain['gambar']; ?>" alt="<?php echo $produk_lain['nm_produk']; ?>">
+                                <img src="admin/produk_img/<?php echo $produk_lain['gambar']; ?>" alt="<?php echo $produk_lain['nm_produk']; ?>" style="width: 200px; height: 210px; object-fit: cover;">
                                 <div class="single_product_text">
                                     <h4><?php echo $produk_lain['nm_produk']; ?></h4>
                                     <h3>Rp <?php echo number_format($produk_lain['harga'], 0, ',', '.'); ?></h3>
@@ -279,64 +284,17 @@
         <div class="container">
             <div class="row justify-content-around">
                 <div class="col-sm-6 col-lg-2">
-                    <div class="single_footer_part">
-                        <h4>Top Products</h4>
-                        <ul class="list-unstyled">
-                            <li><a href="">Managed Website</a></li>
-                            <li><a href="">Manage Reputation</a></li>
-                            <li><a href="">Power Tools</a></li>
-                            <li><a href="">Marketing Service</a></li>
-                        </ul>
-                    </div>
                 </div>
                 <div class="col-sm-6 col-lg-2">
-                    <div class="single_footer_part">
-                        <h4>Quick Links</h4>
-                        <ul class="list-unstyled">
-                            <li><a href="">Jobs</a></li>
-                            <li><a href="">Brand Assets</a></li>
-                            <li><a href="">Investor Relations</a></li>
-                            <li><a href="">Terms of Service</a></li>
-                        </ul>
-                    </div>
                 </div>
                 <div class="col-sm-6 col-lg-2">
-                    <div class="single_footer_part">
-                        <h4>Features</h4>
-                        <ul class="list-unstyled">
-                            <li><a href="">Jobs</a></li>
-                            <li><a href="">Brand Assets</a></li>
-                            <li><a href="">Investor Relations</a></li>
-                            <li><a href="">Terms of Service</a></li>
-                        </ul>
-                    </div>
                 </div>
                 <div class="col-sm-6 col-lg-2">
-                    <div class="single_footer_part">
-                        <h4>Resources</h4>
-                        <ul class="list-unstyled">
-                            <li><a href="">Guides</a></li>
-                            <li><a href="">Research</a></li>
-                            <li><a href="">Experts</a></li>
-                            <li><a href="">Agencies</a></li>
-                        </ul>
-                    </div>
                 </div>
                 <div class="col-sm-6 col-lg-4">
-                    <div class="single_footer_part">
-                        <h4>Newsletter</h4>
-                        <p>Heaven fruitful doesn't over lesser in days. Appear creeping
-                        </p>
-                        <div id="mc_embed_signup">
-                            <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="subscribe_form relative mail_part">
-                                <input type="email" name="email" id="newsletter-form-email" placeholder="Email Address" class="placeholder hide-on-focus" onfocus="this.placeholder = ''" onblur="this.placeholder = ' Email Address '">
-                                <button type="submit" name="submit" id="newsletter-submit" class="email_icon newsletter-submit button-contactForm">subscribe</button>
-                                <div class="mt-10 info"></div>
-                            </form>
-                        </div>
-                    </div>
                 </div>
             </div>
+
         </div>
         <div class="copyright_part">
             <div class="container">
@@ -346,7 +304,7 @@
                             <P><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                                 Copyright &copy;<script>
                                     document.write(new Date().getFullYear());
-                                </script> All rights reserved | This template is made with <i class="ti-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                </script> All rights reserved | This template is made with <i class="ti-heart" aria-hidden="true"></i> by <a href="#" target="_blank">SecretAdmin</a>
                                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></P>
                         </div>
                     </div>
