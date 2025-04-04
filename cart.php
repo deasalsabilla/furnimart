@@ -243,7 +243,7 @@ WHERE u.id_user = '$id_user'";
                   <h5>Subtotal</h5>
                 </td>
                 <td style="text-align: right;">
-                  <h5>Rp. <?php echo number_format($subtotal, 0, ',', '.'); ?></h5>
+                  <h5 style="white-space: nowrap; display: flex; justify-content: flex-start; gap: 5px;">Rp. <?php echo number_format($subtotal, 0, ',', '.'); ?></h5>
                 </td>
               </tr>
               <tr>
@@ -252,7 +252,7 @@ WHERE u.id_user = '$id_user'";
                   <h5>Diskon</h5>
                 </td>
                 <td style="text-align: right;">
-                  <h5>Rp. <?php echo number_format($diskon, 0, ',', '.'); ?></h5>
+                  <h5 style="white-space: nowrap; display: flex; justify-content: flex-start; gap: 5px;">Rp. <?php echo number_format($diskon, 0, ',', '.'); ?></h5>
                 </td>
               </tr>
               <tr>
@@ -261,7 +261,7 @@ WHERE u.id_user = '$id_user'";
                   <h5>Total Bayar</h5>
                 </td>
                 <td style="text-align: right;">
-                  <h5>Rp. <?php echo number_format($total_bayar, 0, ',', '.'); ?></h5>
+                  <h5 style="white-space: nowrap; display: flex; justify-content: flex-start; gap: 5px;">Rp. <?php echo number_format($total_bayar, 0, ',', '.'); ?></h5>
                 </td>
               </tr>
             </tbody>
