@@ -170,7 +170,7 @@
                   </td>
                   <td class="text-center">
                     <form action="hapus_cart.php" method="POST">
-                      <input type="hidden" name="id_produk" value="<?php echo $row['id_produk']; ?>">
+                      <input type="hidden" name="id_pesanan" value="<?php echo $row['id_pesanan']; ?>">
                       <button type="submit" class="btn btn-danger btn-sm">
                         <i class="ti-close"></i>
                       </button>
