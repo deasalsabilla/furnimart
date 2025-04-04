@@ -72,7 +72,7 @@ if (!isset($_SESSION["login"])) {
                     </a>
                 </li><!-- End Search Icon-->
 
-                    
+
 
                 <li class="nav-item dropdown pe-3">
 
@@ -179,7 +179,7 @@ if (!isset($_SESSION["login"])) {
                     <div class="card-body">
                         <div class="filter-bar mt-3">
                             <form class="filter-form d-flex align-items-center" method="GET" action="produk.php">
-                                <select name="kategori" class="form-select me-2"  style="max-width: 200px;" title="Pilih kategori">
+                                <select name="kategori" class="form-select me-2" style="max-width: 200px;" title="Pilih kategori">
                                     <option value="">-- Semua Kategori --</option>
                                     <option value="elektronik">Elektronik</option>
                                     <option value="pakaian">Pakaian</option>
@@ -200,6 +200,18 @@ if (!isset($_SESSION["login"])) {
                     <div class="card">
                         <div class="card-body">
                             <!-- Table with stripped rows -->
+                            <?php
+                            // Sertakan file koneksi
+                            include 'koneksi.php';
+
+                            // Query untuk mengambil data pesanan dan username pengguna
+                            $sql = "SELECT p.id_pesanan, p.id_produk, p.qty, p.total, u.username 
+        FROM tb_pesanan p 
+        JOIN tb_user u ON p.id_user = u.id_user";
+
+                            $result = $koneksi->query($sql);
+                            ?>
+
                             <table class="table table-striped mt-2">
                                 <thead>
                                     <tr>
@@ -212,8 +224,26 @@ if (!isset($_SESSION["login"])) {
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php
+                                    $no = 1;
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<tr>";
+                                            echo "<td>" . $no++ . "</td>";
+                                            echo "<td>" . $row["id_pesanan"] . "</td>";
+                                            echo "<td>" . $row["id_produk"] . "</td>";
+                                            echo "<td>" . $row["qty"] . "</td>";
+                                            echo "<td>Rp " . number_format($row["total"], 0, ",", ".") . "</td>";
+                                            echo "<td>" . $row["username"] . "</td>";
+                                            echo "</tr>";
+                                        }
+                                    } else {
+                                        echo "<tr><td colspan='6' class='text-center'>Belum ada data pesanan</td></tr>";
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
+
                             <!-- End Table with stripped rows -->
 
                         </div>
