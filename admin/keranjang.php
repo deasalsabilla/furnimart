@@ -231,7 +231,7 @@ if (!isset($_SESSION["login"])) {
             &copy; Copyright <strong><span>Furnimart</span></strong>. All Rights Reserved
         </div>
         <div class="credits">
-            Designed by <a href="https://instagram.com/dea.salsa.503/" target="_blank">SecretAdmin</a>
+            Designed by <a href="https://instagram.com/dea.salsa.503/" target="_blank">Dea Salsabilla</a>
         </div>
     </footer><!-- End Footer -->
 
