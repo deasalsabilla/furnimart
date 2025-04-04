@@ -177,18 +177,34 @@ if (!isset($_SESSION["login"])) {
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
+                        <?php
+                        include 'koneksi.php';
+
+                        // Ambil data kategori
+                        $sql_kategori = "SELECT id_kategori, nm_kategori FROM tb_kategori";
+                        $result_kategori = $koneksi->query($sql_kategori);
+
+                        // Tangkap filter kategori dari GET
+                        $filter_kategori = isset($_GET['kategori']) ? $_GET['kategori'] : '';
+                        ?>
+
                         <div class="filter-bar mt-3">
-                            <form class="filter-form d-flex align-items-center" method="GET" action="produk.php">
+                            <form class="filter-form d-flex align-items-center" method="GET" action="">
                                 <select name="kategori" class="form-select me-2" style="max-width: 200px;" title="Pilih kategori">
                                     <option value="">-- Semua Kategori --</option>
-                                    <option value="elektronik">Elektronik</option>
-                                    <option value="pakaian">Pakaian</option>
-                                    <option value="makanan">Makanan</option>
-                                    <option value="aksesoris">Aksesoris</option>
-                                    <!-- Tambahkan kategori lain sesuai kebutuhan -->
+                                    <?php
+                                    if ($result_kategori->num_rows > 0) {
+                                        while ($row = $result_kategori->fetch_assoc()) {
+                                            $selected = ($filter_kategori == $row['id_kategori']) ? "selected" : "";
+                                            echo "<option value='" . $row['id_kategori'] . "' $selected>" . htmlspecialchars($row['nm_kategori']) . "</option>";
+                                        }
+                                    }
+                                    ?>
                                 </select>
+                                <button type="submit" class="btn btn-primary ms-2">Filter</button>
                             </form>
                         </div><!-- End Filter Bar -->
+
                     </div>
                 </div>
             </div>
@@ -201,13 +217,19 @@ if (!isset($_SESSION["login"])) {
                         <div class="card-body">
                             <!-- Table with stripped rows -->
                             <?php
-                            // Sertakan file koneksi
                             include 'koneksi.php';
 
-                            // Query untuk mengambil data pesanan dan username pengguna
+                            // Query untuk mengambil data pesanan dengan join ke produk dan kategori
                             $sql = "SELECT p.id_pesanan, p.id_produk, p.qty, p.total, u.username 
-        FROM tb_pesanan p 
-        JOIN tb_user u ON p.id_user = u.id_user";
+                            FROM tb_pesanan p
+                            JOIN tb_user u ON p.id_user = u.id_user
+                            JOIN tb_produk pr ON p.id_produk = pr.id_produk
+                            JOIN tb_kategori k ON pr.id_kategori = k.id_kategori";
+
+                            // Tambahkan filter kategori jika dipilih
+                            if (!empty($filter_kategori)) {
+                                $sql .= " WHERE k.id_kategori = '$filter_kategori'";
+                            }
 
                             $result = $koneksi->query($sql);
                             ?>
@@ -243,12 +265,9 @@ if (!isset($_SESSION["login"])) {
                                     ?>
                                 </tbody>
                             </table>
-
                             <!-- End Table with stripped rows -->
-
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
