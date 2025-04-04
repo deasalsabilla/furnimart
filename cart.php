@@ -124,16 +124,19 @@
 
           $id_user = $_SESSION['id_user']; // Ambil user_id dari sesi
           $query = "SELECT p.id_pesanan, pr.nm_produk, pr.harga, p.qty, (pr.harga * p.qty) AS total, pr.gambar 
-          FROM tb_pesanan p
-          JOIN tb_produk pr ON p.id_produk = pr.id_produk
-          JOIN tb_user u ON p.id_user = u.id_user
-          WHERE u.id_user = '$id_user'";
+FROM tb_pesanan p
+JOIN tb_produk pr ON p.id_produk = pr.id_produk
+JOIN tb_user u ON p.id_user = u.id_user
+WHERE u.id_user = '$id_user'";
 
           $result = mysqli_query($koneksi, $query);
 
           if (!$result) {
             die("Query Error: " . mysqli_error($koneksi));
           }
+
+          // Inisialisasi subtotal
+          $subtotal = 0;
           ?>
 
           <table class="table">
@@ -147,7 +150,20 @@
               </tr>
             </thead>
             <tbody>
-              <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+              <?php while ($row = mysqli_fetch_assoc($result)) {
+                // Tambahkan ke subtotal
+                $subtotal += $row['total'];
+                // Hitung diskon berdasarkan subtotal
+                $diskon = 0;
+                if ($subtotal > 700000 && $subtotal <= 1500000) {
+                  $diskon = 0.05 * $subtotal; // Diskon 5%
+                } elseif ($subtotal > 1500000) {
+                  $diskon = 0.08 * $subtotal; // Diskon 8%
+                }
+
+                // Hitung total bayar
+                $total_bayar = $subtotal - $diskon;
+              ?>
                 <tr>
                   <td>
                     <div class="media d-flex align-items-center">
@@ -156,7 +172,7 @@
                     </div>
                   </td>
                   <td>
-                    <h5>Rp. <?php echo number_format($row['harga'], 0); ?></h5>
+                    <h5>Rp. <?php echo number_format($row['harga'], 0, ',', '.'); ?></h5>
                   </td>
                   <td>
                     <div class="product_count">
@@ -195,7 +211,7 @@
                     });
                   </script>
                   <td>
-                    <h5>Rp. <?php echo number_format($row['total'], 0); ?></h5>
+                    <h5>Rp. <?php echo number_format($row['total'], 0, ',', '.'); ?></h5>
                   </td>
                   <td>
                     <form action="hapus_cart.php" method="POST">
@@ -222,56 +238,30 @@
                 </td>
               </tr>
               <tr>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td colspan="3"></td> <!-- Mengosongkan tiga kolom pertama -->
                 <td>
                   <h5>Subtotal</h5>
                 </td>
-                <td>
-                  <h5>$2160.00</h5>
+                <td style="text-align: right;">
+                  <h5>Rp. <?php echo number_format($subtotal, 0, ',', '.'); ?></h5>
                 </td>
               </tr>
-              <tr class="shipping_area">
-                <td></td>
-                <td></td>
-                <td></td>
+              <tr>
+                <td colspan="3"></td> <!-- Mengosongkan tiga kolom pertama -->
                 <td>
-                  <h5>Shipping</h5>
+                  <h5>Diskon</h5>
                 </td>
+                <td style="text-align: right;">
+                  <h5>Rp. <?php echo number_format($diskon, 0, ',', '.'); ?></h5>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3"></td> <!-- Mengosongkan tiga kolom pertama -->
                 <td>
-                  <div class="shipping_box">
-                    <ul class="list">
-                      <li>
-                        <a href="#">Flat Rate: $5.00</a>
-                      </li>
-                      <li>
-                        <a href="#">Free Shipping</a>
-                      </li>
-                      <li>
-                        <a href="#">Flat Rate: $10.00</a>
-                      </li>
-                      <li class="active">
-                        <a href="#">Local Delivery: $2.00</a>
-                      </li>
-                    </ul>
-                    <h6>
-                      Calculate Shipping
-                      <i class="fa fa-caret-down" aria-hidden="true"></i>
-                    </h6>
-                    <select class="shipping_select">
-                      <option value="1">Bangladesh</option>
-                      <option value="2">India</option>
-                      <option value="4">Pakistan</option>
-                    </select>
-                    <select class="shipping_select section_bg">
-                      <option value="1">Select a State</option>
-                      <option value="2">Select a State</option>
-                      <option value="4">Select a State</option>
-                    </select>
-                    <input type="text" placeholder="Postcode/Zipcode" />
-                    <a class="btn_1" href="#">Update Details</a>
-                  </div>
+                  <h5>Total Bayar</h5>
+                </td>
+                <td style="text-align: right;">
+                  <h5>Rp. <?php echo number_format($total_bayar, 0, ',', '.'); ?></h5>
                 </td>
               </tr>
             </tbody>
