@@ -268,11 +268,35 @@ WHERE u.id_user = '$id_user'";
           </table>
           <div class="checkout_btn_inner float-right">
             <a class="btn_1" href="belanja.php">Continue Shopping</a>
-            <a class="btn_1 checkout_btn_1" href="#">Proceed to checkout</a>
+            <a class="btn_1 checkout_btn_1" id="checkoutBtn" href="#">Proceed to checkout</a>
           </div>
         </div>
       </div>
   </section>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("checkoutBtn").addEventListener("click", function() {
+        fetch("proses_checkout.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({})
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              alert("Checkout berhasil!");
+              window.location.href = "belanja.php"; // Redirect ke halaman riwayat transaksi
+            } else {
+              alert("Gagal checkout: " + data.message);
+            }
+          })
+          .catch(error => console.error("Error:", error));
+      });
+    });
+  </script>
+
   <!--================End Cart Area =================-->
 
   <!--::footer_part start::-->

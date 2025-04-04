@@ -1,0 +1,9 @@
+[33m25cb844[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m HEAD@{0}: reset: moving to HEAD~1
+[33md6e52a4[m HEAD@{1}: reset: moving to HEAD~1
+[33md1d1b4e[m HEAD@{2}: commit: subtotal, diskon, dan total bayar
+[33md6e52a4[m HEAD@{3}: commit: membetulkan fungsi qty dan merapikan tabel
+[33m25cb844[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m HEAD@{4}: pull origin master: Fast-forward
+[33m94a0803[m HEAD@{5}: commit: fitur continue shopping cart
+[33m08b884a[m HEAD@{6}: commit: fitur hapus produk dari cart
+[33m741b5dd[m HEAD@{7}: merge origin/master: Merge made by the 'ort' strategy.
+[33me3751b1[m HEAD@{8}: commit (initial): initial commit furnimart
