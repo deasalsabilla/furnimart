@@ -152,23 +152,52 @@
                   <td>
                     <div class="media d-flex align-items-center">
                       <img src="admin/produk_img/<?php echo $row['gambar']; ?>" alt="" width="80px" class="me-3" />
-                      <p class="mb-0"><?php echo $row['nm_produk']; ?></p>
+                      <p class="mb-0 p-3"><?php echo $row['nm_produk']; ?></p>
                     </div>
                   </td>
                   <td>
-                    <h5 class="text-center">Rp. <?php echo number_format($row['harga'], 0); ?></h5>
+                    <h5>Rp. <?php echo number_format($row['harga'], 0); ?></h5>
                   </td>
                   <td>
-                    <div class="product_count text-center">
+                    <div class="product_count">
                       <span class="input-number-decrement"> <i class="ti-angle-down"></i></span>
-                      <input class="input-number text-center" type="text" value="<?php echo $row['qty']; ?>" min="1" max="10">
+                      <input class="input-number" type="text" value="<?php echo $row['qty']; ?>" min="1">
                       <span class="input-number-increment"> <i class="ti-angle-up"></i></span>
                     </div>
                   </td>
+
+                  <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                      // Hapus semua event listener sebelumnya (mencegah duplikasi event)
+                      document.querySelectorAll(".input-number-decrement, .input-number-increment").forEach(button => {
+                        let newButton = button.cloneNode(true); // Clone untuk reset event listener
+                        button.replaceWith(newButton); // Ganti dengan tombol baru tanpa event lama
+                      });
+
+                      // Tambahkan event listener yang baru
+                      document.querySelectorAll(".product_count").forEach(product => {
+                        let decrementButton = product.querySelector(".input-number-decrement");
+                        let incrementButton = product.querySelector(".input-number-increment");
+                        let inputField = product.querySelector(".input-number");
+
+                        decrementButton.addEventListener("click", function() {
+                          let value = parseInt(inputField.value);
+                          if (value > 1) {
+                            inputField.value = value - 1;
+                          }
+                        });
+
+                        incrementButton.addEventListener("click", function() {
+                          let value = parseInt(inputField.value);
+                          inputField.value = value + 1;
+                        });
+                      });
+                    });
+                  </script>
                   <td>
-                    <h5 class="text-center">Rp. <?php echo number_format($row['total'], 0); ?></h5>
+                    <h5>Rp. <?php echo number_format($row['total'], 0); ?></h5>
                   </td>
-                  <td class="text-center">
+                  <td>
                     <form action="hapus_cart.php" method="POST">
                       <input type="hidden" name="id_pesanan" value="<?php echo $row['id_pesanan']; ?>">
                       <button type="submit" class="btn btn-danger btn-sm">
