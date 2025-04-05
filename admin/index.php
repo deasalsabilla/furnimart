@@ -218,11 +218,15 @@ if (!isset($_SESSION["login"])) {
 
             // Query untuk mendapatkan total pendapatan hari ini
             $query = "
-    SELECT SUM((jd.harga - jd.diskon) * jd.qty) AS total_revenue 
-    FROM tb_jual j
-    JOIN tb_jualdtl jd ON j.id_jual = jd.id_jual
-    WHERE j.tgl_jual = '$tanggalHariIni'
+    SELECT SUM(subtotal - diskon) AS total_revenue FROM (
+        SELECT j.diskon, SUM(jd.harga * jd.qty) AS subtotal
+        FROM tb_jual j
+        JOIN tb_jualdtl jd ON j.id_jual = jd.id_jual
+        WHERE j.tgl_jual = '$tanggalHariIni'
+        GROUP BY j.id_jual
+    ) AS temp
 ";
+
             $result = mysqli_query($koneksi, $query);
             $data = mysqli_fetch_assoc($result);
             $totalRevenue = $data['total_revenue'] ?? 0;
