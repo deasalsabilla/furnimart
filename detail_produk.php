@@ -145,7 +145,7 @@
     include 'admin/koneksi.php';
 
     // Pastikan ada parameter id_produk yang dikirim dari URL
-    $id_produk = isset($_GET['id']) ? $_GET['id'] : '';
+    $id_produk = isset($_GET['id']) ? mysqli_real_escape_string($koneksi, $_GET['id']) : '';
 
     $query = "SELECT p.nm_produk, p.harga, p.stok, p.desk, p.gambar, k.nm_kategori 
           FROM tb_produk p
@@ -161,12 +161,15 @@
             echo "<script>alert('Silakan login terlebih dahulu!'); window.location.href='login.php';</script>";
         } else {
             $id_user = $_SESSION['id_user'];
-            $qty = $_POST['qty'];
+            $qty = intval($_POST['qty']);
             $total = $produk['harga'] * $qty;
 
-            // Periksa stok
-            if ($qty > $produk['stok']) {
-                echo "<script>alert('Stok tidak mencukupi!');</script>";
+            // Cek stok langsung dari database (lebih aman)
+            $cek_stok = $koneksi->query("SELECT stok FROM tb_produk WHERE id_produk = '$id_produk'");
+            $data_stok = $cek_stok->fetch_assoc();
+
+            if ($qty > $data_stok['stok']) {
+                echo "<script>alert('Stok tidak mencukupi! Stok tersedia: {$data_stok['stok']}');</script>";
             } else {
                 // Buat id_pesanan otomatis dengan format M001, M002, dst.
                 $query_id = "SELECT id_pesanan FROM tb_pesanan ORDER BY id_pesanan DESC LIMIT 1";
@@ -186,12 +189,13 @@
                 if ($koneksi->query($query_insert) === TRUE) {
                     echo "<script>alert('Produk berhasil ditambahkan ke keranjang!'); window.location.href='belanja.php';</script>";
                 } else {
-                    echo "<script>alert('Terjadi kesalahan, coba lagi!');</script>";
+                    echo "<script>alert('Terjadi kesalahan saat menambahkan ke keranjang!');</script>";
                 }
             }
         }
     }
     ?>
+
 
     <!-- Kode HTML Produk -->
     <div class="product_image_area section_padding">
