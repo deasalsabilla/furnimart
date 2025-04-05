@@ -57,11 +57,12 @@ if (!isset($_SESSION["login"])) {
         </div><!-- End Logo -->
 
         <div class="search-bar">
-            <form class="search-form d-flex align-items-center" method="POST" action="#">
-                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+            <form class="search-form d-flex align-items-center" method="POST" action="">
+                <input type="text" name="query" placeholder="Search" title="Enter search keyword" value="<?php echo isset($_POST['query']) ? htmlspecialchars($_POST['query']) : ''; ?>">
                 <button type="submit" title="Search"><i class="bi bi-search"></i></button>
             </form>
         </div><!-- End Search Bar -->
+
 
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
@@ -201,7 +202,20 @@ if (!isset($_SESSION["login"])) {
                                     <?php
                                     include "koneksi.php";
                                     $no = 1;
-                                    $sql = mysqli_query($koneksi, "SELECT id_user, username, status FROM tb_user");
+
+                                    // Cek apakah ada input pencarian
+                                    $query = isset($_POST['query']) ? mysqli_real_escape_string($koneksi, $_POST['query']) : '';
+
+                                    // Query dasar
+                                    $sql_query = "SELECT id_user, username, status FROM tb_user";
+
+                                    // Tambahkan pencarian jika input tidak kosong
+                                    if (!empty($query)) {
+                                        $sql_query .= " WHERE username LIKE '%$query%'";
+                                    }
+
+                                    $sql = mysqli_query($koneksi, $sql_query);
+
                                     if (mysqli_num_rows($sql) > 0) {
                                         while ($hasil = mysqli_fetch_array($sql)) {
                                     ?>
@@ -220,12 +234,12 @@ if (!isset($_SESSION["login"])) {
                                     } else {
                                         ?>
                                         <tr>
-                                            <td colspan="4" class="text-center">Belum Ada Data</td>
+                                            <td colspan="4" class="text-center">Data tidak ditemukan</td>
                                         </tr>
-
                                     <?php
                                     }
                                     ?>
+
                                 </tbody>
                             </table>
                             <!-- End Table with stripped rows -->
