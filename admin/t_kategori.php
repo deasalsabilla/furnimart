@@ -1,13 +1,21 @@
 <?php
+session_start();
 include "koneksi.php";
 
-session_start();
-
+// Cek apakah sudah login
 if (!isset($_SESSION["login"])) {
-  header("Location: login.php");
-  exit;
+    header("Location: login.php");
+    exit;
 }
 
+// Cek apakah status tersedia dan pastikan user adalah admin
+if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
+    echo "<script>
+    alert('Akses ditolak! Halaman ini hanya untuk Admin.');
+    window.location.href='login.php';
+  </script>";
+    exit;
+}
 if (isset($_POST['simpan'])) {
     $auto = mysqli_query($koneksi, "select max(id_kategori) as max_code from tb_kategori");
     $hasil = mysqli_fetch_array($auto);
