@@ -174,19 +174,15 @@ if (!isset($_SESSION["login"])) {
         <!-- End Page Title -->
 
         <?php
-        // Koneksi ke database
         include "koneksi.php";
 
-        // Cek koneksi
         if ($koneksi->connect_error) {
             die("Koneksi gagal: " . $koneksi->connect_error);
         }
 
-        // Ambil data kategori dari tb_kategori
         $sqlKategori = "SELECT id_kategori, nm_kategori FROM tb_kategori";
         $resultKategori = $koneksi->query($sqlKategori);
 
-        // Ambil data transaksi dari tb_jual
         $sqlTransaksi = "SELECT COUNT(*) as total FROM tb_jual";
         $resultTransaksi = $koneksi->query($sqlTransaksi);
         $dataTransaksi = $resultTransaksi->fetch_assoc();
@@ -220,7 +216,7 @@ if (!isset($_SESSION["login"])) {
                                 </select>
                             </div>
 
-                            <button class="btn btn-primary">Cetak PDF</button>
+                            <button id="btnCetak" class="btn btn-primary">Cetak PDF</button>
                         </div>
                     </div>
                 </div>
@@ -232,19 +228,16 @@ if (!isset($_SESSION["login"])) {
                 const laporanSelect = document.getElementById("laporanSelect").value;
                 const tipeLaporanSelect = document.getElementById("tipeLaporanSelect");
 
-                // Hapus opsi sebelumnya
                 tipeLaporanSelect.innerHTML = "";
 
                 if (laporanSelect === "produk") {
-                    // Tambahkan opsi "All" untuk Produk
                     let optionAll = document.createElement("option");
                     optionAll.value = "all";
                     optionAll.textContent = "All";
                     tipeLaporanSelect.appendChild(optionAll);
 
-                    // Tambahkan kategori dari PHP
-                    <?php if ($resultKategori->num_rows > 0): ?>
-                        <?php while ($row = $resultKategori->fetch_assoc()): ?>
+                    <?php if ($resultKategori->num_rows > 0) : ?>
+                        <?php while ($row = $resultKategori->fetch_assoc()) : ?>
                             let option<?php echo $row['id_kategori']; ?> = document.createElement("option");
                             option<?php echo $row['id_kategori']; ?>.value = "<?php echo $row['id_kategori']; ?>";
                             option<?php echo $row['id_kategori']; ?>.textContent = "<?php echo $row['nm_kategori']; ?>";
@@ -253,14 +246,39 @@ if (!isset($_SESSION["login"])) {
                     <?php endif; ?>
 
                 } else if (laporanSelect === "transaksi") {
-                    // Tambahkan hanya opsi "All" untuk Transaksi
                     let optionAll = document.createElement("option");
                     optionAll.value = "all";
                     optionAll.textContent = "All";
                     tipeLaporanSelect.appendChild(optionAll);
                 }
             }
+
+            document.getElementById("btnCetak").addEventListener("click", function() {
+                const laporan = document.getElementById("laporanSelect").value;
+                const tipe = document.getElementById("tipeLaporanSelect").value;
+
+                if (!laporan || !tipe) {
+                    alert("Silakan pilih jenis laporan dan tipe laporan terlebih dahulu.");
+                    return;
+                }
+
+                let url = "";
+
+                if (laporan === "produk") {
+                    if (tipe === "all") {
+                        url = "pdf_produk_all.php";
+                    } else {
+                        url = "pdf_produk_kategori.php?id_kategori=" + tipe;
+                    }
+                } else if (laporan === "transaksi") {
+                    url = "pdf_transaksi.php";
+                }
+
+                // Buka file PDF di tab baru
+                window.open(url, "_blank");
+            });
         </script>
+
 
     </main><!-- End #main -->
 
