@@ -136,133 +136,102 @@ WHERE u.id_user = '$id_user'";
 
           ?>
 
-          <table class="table">
-            <thead>
-              <tr>
-                <th style="width: 40%;">Produk</th>
-                <th style="width: 20%;">Harga</th>
-                <th style="width: 20%;">Jumlah</th>
-                <th style="width: 15%;">Total</th>
-                <th style="width: 5%;">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php while ($row = mysqli_fetch_assoc($result)) {
-                // Tambahkan ke subtotal
-                $subtotal += $row['total'];
-                // Hitung diskon berdasarkan subtotal
+          <form action="update_cart.php" method="POST">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 40%;">Produk</th>
+                  <th style="width: 20%;">Harga</th>
+                  <th style="width: 20%;">Jumlah</th>
+                  <th style="width: 15%;">Total</th>
+                  <th style="width: 5%;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                $subtotal = 0;
+                while ($row = mysqli_fetch_assoc($result)) {
+                  $subtotal += $row['total'];
+                ?>
+                  <tr>
+                    <td>
+                      <div class="media d-flex align-items-center">
+                        <img src="admin/produk_img/<?php echo $row['gambar']; ?>" alt="" width="80px" class="me-3" />
+                        <p class="mb-0 p-3"><?php echo $row['nm_produk']; ?></p>
+                      </div>
+                    </td>
+                    <td>
+                      <h5>Rp. <?php echo number_format($row['harga'], 0, ',', '.'); ?></h5>
+                    </td>
+                    <td>
+                      <div class="product_count">
+                        <span class="input-number-decrement"><i class="ti-angle-down"></i></span>
+                        <input class="input-number" type="number" name="qty[<?php echo $row['id_pesanan']; ?>]" value="<?php echo $row['qty']; ?>" min="1">
+                        <span class="input-number-increment"><i class="ti-angle-up"></i></span>
+                      </div>
+                    </td>
+                    <td>
+                      <h5>Rp. <?php echo number_format($row['total'], 0, ',', '.'); ?></h5>
+                    </td>
+                    <td>
+                      <form action="hapus_cart.php" method="POST" style="display:inline;">
+                        <input type="hidden" name="id_pesanan" value="<?php echo $row['id_pesanan']; ?>">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                          <i class="ti-close"></i>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                <?php } ?>
+
+                <!-- Diskon -->
+                <?php
                 $diskon = 0;
                 if ($subtotal > 700000 && $subtotal <= 1500000) {
-                  $diskon = 0.05 * $subtotal; // Diskon 5%
+                  $diskon = 0.05 * $subtotal;
                 } elseif ($subtotal > 1500000) {
-                  $diskon = 0.08 * $subtotal; // Diskon 8%
+                  $diskon = 0.08 * $subtotal;
                 }
-
-                // Hitung total bayar
                 $total_bayar = $subtotal - $diskon;
-              ?>
-                <tr>
-                  <td>
-                    <div class="media d-flex align-items-center">
-                      <img src="admin/produk_img/<?php echo $row['gambar']; ?>" alt="" width="80px" class="me-3" />
-                      <p class="mb-0 p-3"><?php echo $row['nm_produk']; ?></p>
-                    </div>
-                  </td>
-                  <td>
-                    <h5>Rp. <?php echo number_format($row['harga'], 0, ',', '.'); ?></h5>
-                  </td>
-                  <td>
-                    <div class="product_count">
-                      <span class="input-number-decrement"> <i class="ti-angle-down"></i></span>
-                      <input class="input-number" type="text" value="<?php echo $row['qty']; ?>" min="1">
-                      <span class="input-number-increment"> <i class="ti-angle-up"></i></span>
-                    </div>
-                  </td>
+                ?>
 
-                  <script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                      // Hapus semua event listener sebelumnya (mencegah duplikasi event)
-                      document.querySelectorAll(".input-number-decrement, .input-number-increment").forEach(button => {
-                        let newButton = button.cloneNode(true); // Clone untuk reset event listener
-                        button.replaceWith(newButton); // Ganti dengan tombol baru tanpa event lama
-                      });
-
-                      // Tambahkan event listener yang baru
-                      document.querySelectorAll(".product_count").forEach(product => {
-                        let decrementButton = product.querySelector(".input-number-decrement");
-                        let incrementButton = product.querySelector(".input-number-increment");
-                        let inputField = product.querySelector(".input-number");
-
-                        decrementButton.addEventListener("click", function() {
-                          let value = parseInt(inputField.value);
-                          if (value > 1) {
-                            inputField.value = value - 1;
-                          }
-                        });
-
-                        incrementButton.addEventListener("click", function() {
-                          let value = parseInt(inputField.value);
-                          inputField.value = value + 1;
-                        });
-                      });
-                    });
-                  </script>
-                  <td>
-                    <h5>Rp. <?php echo number_format($row['total'], 0, ',', '.'); ?></h5>
-                  </td>
-                  <td>
-                    <form action="hapus_cart.php" method="POST">
-                      <input type="hidden" name="id_pesanan" value="<?php echo $row['id_pesanan']; ?>">
-                      <button type="submit" class="btn btn-danger btn-sm">
-                        <i class="ti-close"></i>
-                      </button>
-                    </form>
+                <tr class="bottom_button">
+                  <td colspan="5">
+                    <button type="submit" class="btn_1">Update Cart</button>
                   </td>
                 </tr>
-              <?php } ?>
 
-              <tr class="bottom_button">
-                <td>
-                  <a class="btn_1" href="#">Update Cart</a>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                  <div class="cupon_text float-right">
-                    <a class="btn_1" href="#">Close Coupon</a>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="3"></td> <!-- Mengosongkan tiga kolom pertama -->
-                <td>
-                  <h5>Subtotal</h5>
-                </td>
-                <td style="text-align: right;">
-                  <h5 style="white-space: nowrap; display: flex; justify-content: flex-start; gap: 5px;">Rp. <?php echo number_format($subtotal, 0, ',', '.'); ?></h5>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="3"></td> <!-- Mengosongkan tiga kolom pertama -->
-                <td>
-                  <h5>Diskon</h5>
-                </td>
-                <td style="text-align: right;">
-                  <h5 style="white-space: nowrap; display: flex; justify-content: flex-start; gap: 5px;">Rp. <?php echo number_format($diskon, 0, ',', '.'); ?></h5>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="3"></td> <!-- Mengosongkan tiga kolom pertama -->
-                <td>
-                  <h5>Total Bayar</h5>
-                </td>
-                <td style="text-align: right;">
-                  <h5 style="white-space: nowrap; display: flex; justify-content: flex-start; gap: 5px;">Rp. <?php echo number_format($total_bayar, 0, ',', '.'); ?></h5>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                <tr>
+                  <td colspan="3"></td>
+                  <td>
+                    <h5>Subtotal</h5>
+                  </td>
+                  <td style="text-align: right;">
+                    <h5>Rp. <?php echo number_format($subtotal, 0, ',', '.'); ?></h5>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3"></td>
+                  <td>
+                    <h5>Diskon</h5>
+                  </td>
+                  <td style="text-align: right;">
+                    <h5>Rp. <?php echo number_format($diskon, 0, ',', '.'); ?></h5>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3"></td>
+                  <td>
+                    <h5>Total Bayar</h5>
+                  </td>
+                  <td style="text-align: right;">
+                    <h5>Rp. <?php echo number_format($total_bayar, 0, ',', '.'); ?></h5>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+
           <div class="checkout_btn_inner float-right">
             <a class="btn_1" href="belanja.php">Continue Shopping</a>
             <a class="btn_1 checkout_btn_1" id="checkoutBtn" href="#">Proceed to checkout</a>
