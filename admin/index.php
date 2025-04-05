@@ -189,7 +189,7 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
             include 'koneksi.php'; // Sesuaikan dengan file koneksi yang kamu gunakan
 
             // Ambil total jumlah pesanan dari tabel tb_pesanan
-            $query = "SELECT COUNT(*) AS total_pesanan FROM tb_pesanan";
+            $query = "SELECT COUNT(*) AS total_pesanan FROM tb_jual";
             $result = mysqli_query($koneksi, $query);
             $data = mysqli_fetch_assoc($result);
             $totalPesanan = $data['total_pesanan'] ?? 0; // Default ke 0 jika tidak ada pesanan
@@ -220,16 +220,8 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
             // Ambil tanggal hari ini
             $tanggalHariIni = date("Y-m-d");
 
-            // Query untuk mendapatkan total pendapatan hari ini
-            $query = "
-    SELECT SUM(subtotal - diskon) AS total_revenue FROM (
-        SELECT j.diskon, SUM(jd.harga * jd.qty) AS subtotal
-        FROM tb_jual j
-        JOIN tb_jualdtl jd ON j.id_jual = jd.id_jual
-        WHERE j.tgl_jual = '$tanggalHariIni'
-        GROUP BY j.id_jual
-    ) AS temp
-";
+            // Query langsung ke tb_jual berdasarkan tanggal hari ini
+            $query = "SELECT SUM(total) AS total_revenue FROM tb_jual WHERE DATE(tgl_jual) = '$tanggalHariIni'";
 
             $result = mysqli_query($koneksi, $query);
             $data = mysqli_fetch_assoc($result);
@@ -248,13 +240,13 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
                     </div>
                     <div class="ps-3">
                       <h6>Rp<?php echo number_format($totalRevenue, 0, ',', '.'); ?></h6>
-                      <!-- Optional: Bisa tambahkan persentase kenaikan jika kamu punya data historis -->
                     </div>
                   </div>
                 </div>
 
               </div>
             </div>
+
             <!-- End Revenue Card -->
           </div>
         </div><!-- End Left side columns -->
