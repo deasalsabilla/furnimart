@@ -28,6 +28,22 @@
         .owl-next {
             display: none !important;
         }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: #f72a74;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: bold;
+            line-height: 1;
+            min-width: 16px;
+            text-align: center;
+            z-index: 10;
+        }
     </style>
 </head>
 
@@ -62,11 +78,25 @@
                         <?php if (isset($_SESSION['username'])) : ?>
                             <div class="header_icon d-flex">
                                 <!-- Cart Link -->
-                                <div class="cart">
-                                    <a href="cart.php" id="cartLink">
-                                        <i class="fas fa-cart-plus"></i>
-                                    </a>
-                                </div>
+                                <?php
+                                include 'admin/koneksi.php';
+
+                                $user_id = $_SESSION['id_user'] ?? null;
+
+                                if ($user_id) {
+                                    $query = "SELECT COUNT(*) as total FROM tb_pesanan WHERE id_user = '$user_id'";
+                                    $result = mysqli_query($koneksi, $query);
+                                    $data = mysqli_fetch_assoc($result);
+                                    $jumlah_item = $data['total'] ?? 0;
+                                } else {
+                                    $jumlah_item = 0;
+                                }
+                                ?>
+
+                                <a href="cart.php" id="cartLink" style="position: relative; display: inline-block;">
+                                    <i class="fas fa-cart-plus" style="font-size: 16px;"></i>
+                                    <span class="cart-badge"><?= $jumlah_item ?></span>
+                                </a>
 
                                 <!-- User Dropdown -->
                                 <div class="dropdown user">

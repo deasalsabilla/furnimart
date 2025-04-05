@@ -59,12 +59,6 @@
             <?php session_start(); ?>
             <?php if (isset($_SESSION['username'])) : ?>
               <div class="header_icon d-flex">
-                <!-- Cart Link -->
-                <div class="cart">
-                  <a href="cart.php" id="cartLink">
-                    <i class="fas fa-cart-plus"></i>
-                  </a>
-                </div>
 
                 <!-- User Dropdown -->
                 <div class="dropdown user">

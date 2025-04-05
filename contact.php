@@ -38,6 +38,22 @@
       height: 100%;
       border: 0;
     }
+
+    .cart-badge {
+      position: absolute;
+      top: -5px;
+      right: -8px;
+      background: #f72a74;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 10px;
+      font-weight: bold;
+      line-height: 1;
+      min-width: 16px;
+      text-align: center;
+      z-index: 10;
+    }
   </style>
 </head>
 
@@ -72,11 +88,25 @@
             <?php if (isset($_SESSION['username'])) : ?>
               <div class="header_icon d-flex">
                 <!-- Cart Link -->
-                <div class="cart">
-                  <a href="cart.php" id="cartLink">
-                    <i class="fas fa-cart-plus"></i>
-                  </a>
-                </div>
+                <?php
+                include 'admin/koneksi.php';
+
+                $user_id = $_SESSION['id_user'] ?? null;
+
+                if ($user_id) {
+                  $query = "SELECT COUNT(*) as total FROM tb_pesanan WHERE id_user = '$user_id'";
+                  $result = mysqli_query($koneksi, $query);
+                  $data = mysqli_fetch_assoc($result);
+                  $jumlah_item = $data['total'] ?? 0;
+                } else {
+                  $jumlah_item = 0;
+                }
+                ?>
+
+                <a href="cart.php" id="cartLink" style="position: relative; display: inline-block;">
+                  <i class="fas fa-cart-plus" style="font-size: 16px;"></i>
+                  <span class="cart-badge"><?= $jumlah_item ?></span>
+                </a>
 
                 <!-- User Dropdown -->
                 <div class="dropdown user">
@@ -127,11 +157,7 @@
       <div class="d-none d-sm-block mb-5 pb-4">
         <div id="map"></div>
         <div class="map-container">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.973730217078!2d111.58744367410984!3d-7.1290351699173575!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e776411abeabb93%3A0x3ccba806cf9ef497!2sSTT%20Ronggolawe%20Cepu!5e0!3m2!1sid!2sid!4v1743766946322!5m2!1sid!2sid"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            allowfullscreen>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.973730217078!2d111.58744367410984!3d-7.1290351699173575!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e776411abeabb93%3A0x3ccba806cf9ef497!2sSTT%20Ronggolawe%20Cepu!5e0!3m2!1sid!2sid!4v1743766946322!5m2!1sid!2sid" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen>
           </iframe>
         </div>
       </div>
@@ -142,33 +168,27 @@
           <h2 class="contact-title">Menghubungi</h2>
         </div>
         <div class="col-lg-8">
-          <form class="form-contact contact_form" action="contact_process.php" method="post" id="contactForm"
-            novalidate="novalidate">
+          <form class="form-contact contact_form" action="contact_process.php" method="post" id="contactForm" novalidate="novalidate">
             <div class="row">
               <div class="col-12">
                 <div class="form-group">
 
-                  <textarea class="form-control w-100" name="message" id="message" cols="30" rows="9"
-                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Masukkan Pesan'"
-                    placeholder='Masukkan Pesan'></textarea>
+                  <textarea class="form-control w-100" name="message" id="message" cols="30" rows="9" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Masukkan Pesan'" placeholder='Masukkan Pesan'></textarea>
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <input class="form-control" name="name" id="name" type="text" onfocus="this.placeholder = ''"
-                    onblur="this.placeholder = 'Masukkan Nama Anda'" placeholder='Masukkan Nama Anda'>
+                  <input class="form-control" name="name" id="name" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Masukkan Nama Anda'" placeholder='Masukkan Nama Anda'>
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <input class="form-control" name="email" id="email" type="email" onfocus="this.placeholder = ''"
-                    onblur="this.placeholder = 'Masukkan Email Anda'" placeholder='Masukkan Email Anda'>
+                  <input class="form-control" name="email" id="email" type="email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Masukkan Email Anda'" placeholder='Masukkan Email Anda'>
                 </div>
               </div>
               <div class="col-12">
                 <div class="form-group">
-                  <input class="form-control" name="subject" id="subject" type="text" onfocus="this.placeholder = ''"
-                    onblur="this.placeholder = 'Masukkan Subjek'" placeholder='Masukkan Subjek'>
+                  <input class="form-control" name="subject" id="subject" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Masukkan Subjek'" placeholder='Masukkan Subjek'>
                 </div>
               </div>
             </div>
