@@ -181,30 +181,73 @@ if (!isset($_SESSION["login"])) {
                         <div class="card-body">
                             <h5 class="card-title">Lihat Detail Transaksi</h5>
                             <div class="table-responsive">
+                                <?php
+                                include 'koneksi.php'; // pastikan koneksi DB kamu benar
+
+                                $id_jual = $_GET['id']; // misalnya dari URL atau request
+                                // ambil data tb_jual
+                                $jual = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM tb_jual tj JOIN tb_user tu ON tj.id_user = tu.id_user WHERE tj.id_jual = '$id_jual'"));
+
+                                // ambil data detail jual
+                                $detail = mysqli_query($koneksi, "SELECT tjd.*, tp.nm_produk 
+                               FROM tb_jualdtl tjd 
+                               JOIN tb_produk tp ON tjd.id_produk = tp.id_produk 
+                               WHERE tjd.id_jual = '$id_jual'");
+                                ?>
+
                                 <table class="table table-striped mt-2">
                                     <tbody>
                                         <tr>
                                             <th>Kode Belanja</th>
-                                            <td>T001</td>
+                                            <td><?= $jual['id_jual'] ?></td>
                                         </tr>
                                         <tr>
                                             <th>Pengguna</th>
-                                            <td>dea</td>
+                                            <td><?= $jual['username'] ?></td>
                                         </tr>
                                         <tr>
                                             <th>Tanggal</th>
-                                            <td>04-04-2025 12:06:29</td>
+                                            <td><?= date('d-m-Y H:i:s', strtotime($jual['tgl_jual'])) ?></td>
                                         </tr>
                                         <tr>
                                             <th>Total Bayar</th>
-                                            <td>Rp 950.000</td>
+                                            <td>Rp <?= number_format($jual['total'], 0, ',', '.') ?></td>
                                         </tr>
                                         <tr>
                                             <th>Diskon</th>
-                                            <td>Rp 50.000</td>
+                                            <td>Rp <?= number_format($jual['diskon'], 0, ',', '.') ?></td>
                                         </tr>
                                     </tbody>
                                 </table>
+
+                                <h5>Detail Pembelian:</h5>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Produk</th>
+                                            <th>Harga</th>
+                                            <th>Qty</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $no = 1;
+                                        while ($d = mysqli_fetch_assoc($detail)) :
+                                            $subtotal = $d['harga'] * $d['qty'];
+                                        ?>
+                                            <tr>
+                                                <td><?= $no++ ?></td>
+                                                <td><?= $d['nm_produk'] ?></td>
+                                                <td>Rp <?= number_format($d['harga'], 0, ',', '.') ?></td>
+                                                <td><?= $d['qty'] ?></td>
+                                                <td>Rp <?= number_format($subtotal, 0, ',', '.') ?></td>
+                                            </tr>
+                                        <?php endwhile; ?>
+                                    </tbody>
+                                </table>
+
                             </div>
                             <a href="transaksi.php" class="btn btn-secondary">Kembali</a>
                         </div>
