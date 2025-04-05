@@ -193,14 +193,21 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
                                 include 'koneksi.php'; // pastikan koneksi DB kamu benar
 
                                 $id_jual = $_GET['id']; // misalnya dari URL atau request
+
                                 // ambil data tb_jual
-                                $jual = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM tb_jual tj JOIN tb_user tu ON tj.id_user = tu.id_user WHERE tj.id_jual = '$id_jual'"));
+                                $jual = mysqli_fetch_assoc(mysqli_query($koneksi, "
+    SELECT * FROM tb_jual tj 
+    JOIN tb_user tu ON tj.id_user = tu.id_user 
+    WHERE tj.id_jual = '$id_jual'
+"));
 
                                 // ambil data detail jual
-                                $detail = mysqli_query($koneksi, "SELECT tjd.*, tp.nm_produk 
-                               FROM tb_jualdtl tjd 
-                               JOIN tb_produk tp ON tjd.id_produk = tp.id_produk 
-                               WHERE tjd.id_jual = '$id_jual'");
+                                $detail = mysqli_query($koneksi, "
+    SELECT tjd.id_produk, tjd.qty, tjd.harga AS subtotal, tp.nm_produk, tp.harga AS harga_produk
+    FROM tb_jualdtl tjd 
+    JOIN tb_produk tp ON tjd.id_produk = tp.id_produk 
+    WHERE tjd.id_jual = '$id_jual'
+");
                                 ?>
 
                                 <table class="table table-striped mt-2">
@@ -243,18 +250,18 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
                                         <?php
                                         $no = 1;
                                         while ($d = mysqli_fetch_assoc($detail)) :
-                                            $subtotal = $d['harga'] * $d['qty'];
                                         ?>
                                             <tr>
                                                 <td><?= $no++ ?></td>
                                                 <td><?= $d['nm_produk'] ?></td>
-                                                <td>Rp <?= number_format($d['harga'], 0, ',', '.') ?></td>
+                                                <td>Rp <?= number_format($d['harga_produk'], 0, ',', '.') ?></td>
                                                 <td><?= $d['qty'] ?></td>
-                                                <td>Rp <?= number_format($subtotal, 0, ',', '.') ?></td>
+                                                <td>Rp <?= number_format($d['subtotal'], 0, ',', '.') ?></td>
                                             </tr>
                                         <?php endwhile; ?>
                                     </tbody>
                                 </table>
+
 
                             </div>
                             <a href="transaksi.php" class="btn btn-secondary">Kembali</a>
