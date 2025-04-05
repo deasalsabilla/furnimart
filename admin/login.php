@@ -1,23 +1,29 @@
 <?php
 session_start();
-
 require "koneksi.php";
 
 if (isset($_POST["login"])) {
   $username = $_POST["username"];
   $password = $_POST["password"];
 
-  $result = mysqli_query($koneksi, "SELECT * FROM tb_user WHERE username='$username' AND status = 'admin'");
+  // Cek apakah username ditemukan
+  $result = mysqli_query($koneksi, "SELECT * FROM tb_user WHERE username='$username'");
 
-  // cek username
   if (mysqli_num_rows($result) === 1) {
-    // cek password
     $row = mysqli_fetch_assoc($result);
+
+    // Cek password
     if (password_verify($password, $row["password"])) {
-      // set session
-      $_SESSION["login"] = true;
-      $_SESSION["username"] = $row["username"];
-      header("refresh:0, index.php");
+      // Cek apakah status user adalah admin
+      if ($row["status"] === "admin") {
+        $_SESSION["login"] = true;
+        $_SESSION["username"] = $row["username"];
+        $_SESSION["status"] = $row["status"];
+        header("Location: index.php");
+        exit;
+      } else {
+        echo "<script>alert('Anda tidak memiliki akses sebagai admin.')</script>";
+      }
     } else {
       echo "<script>alert('Username atau password yang anda masukkan salah')</script>";
     }
@@ -26,6 +32,7 @@ if (isset($_POST["login"])) {
   }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
