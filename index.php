@@ -200,175 +200,35 @@
                     <div class="product_list_slider owl-carousel">
                         <div class="single_product_list_slider">
                             <div class="row align-items-center justify-content-between">
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_1.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
+                                <?php
+                                include "admin/koneksi.php";
+                                // Ambil data dari database
+                                $query = "SELECT id_produk, nm_produk, harga, gambar FROM tb_produk LIMIT 8";
+                                $result = mysqli_query($koneksi, $query);
+
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $id = $row['id_produk'];
+                                    $nama = $row['nm_produk'];
+                                    $harga = number_format($row['harga'], 0, ',', '.');
+                                    $gambar = $row['gambar'];
+                                ?>
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="single_product_item">
+                                            <img src="admin/produk_img/<?= htmlspecialchars($gambar) ?>" alt="<?= htmlspecialchars($nama) ?>">
+                                            <div class="single_product_text">
+                                                <h4><?= htmlspecialchars($nama) ?></h4>
+                                                <h3>Rp. <?= $harga ?></h3>
+                                                <a href="detail_produk.php?id=<?= $id ?>" class="add_cart">+ keranjang</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_2.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_3.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_4.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_5.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_6.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_7.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_8.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single_product_list_slider">
-                            <div class="row align-items-center justify-content-between">
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_1.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_2.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_3.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_4.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_5.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_6.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_7.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="img/product/product_8.png" alt="">
-                                        <div class="single_product_text">
-                                            <h4>Lounge Chair </h4>
-                                            <h3>Rp. 500.000</h3>
-                                            <a href="#" class="add_cart">+ keranjang<i class="ti-heart"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
     <!-- product_list part start-->
@@ -396,7 +256,7 @@
                         </div>
                         <div class="input-group">
                             <div class="input-group-append">
-                                <a href="belanja.php" class="btn_2" >Serbu Sekarang!</a>
+                                <a href="belanja.php" class="btn_2">Serbu Sekarang!</a>
                             </div>
                         </div>
                     </div>
@@ -431,17 +291,14 @@
                             <P><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                                 Copyright &copy;<script>
                                     document.write(new Date().getFullYear());
-                                </script> All rights reserved | This template is made with <i class="ti-heart" aria-hidden="true"></i> by <a href="#" target="_blank">SecretAdmin</a>
+                                </script> All rights reserved | Furnimart  by <a href="#" target="_blank">Dea Salsabilla</a>
                                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></P>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="footer_icon social_icon">
                             <ul class="list-unstyled">
-                                <li><a href="#" class="single_social_icon"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#" class="single_social_icon"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="#" class="single_social_icon"><i class="fas fa-globe"></i></a></li>
-                                <li><a href="#" class="single_social_icon"><i class="fab fa-behance"></i></a></li>
+                                <li><a href="https://instagram.com/dea.salsa.503/" class="single_social_icon" target="_blank"><i class="fab fa-instagram"></i></a></li>
                             </ul>
                         </div>
                     </div>
