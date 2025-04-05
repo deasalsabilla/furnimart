@@ -129,8 +129,11 @@ WHERE u.id_user = '$id_user'";
             die("Query Error: " . mysqli_error($koneksi));
           }
 
-          // Inisialisasi subtotal
+          // Inisialisasi
           $subtotal = 0;
+          $diskon = 0;
+          $total_bayar = 0;
+
           ?>
 
           <table class="table">
