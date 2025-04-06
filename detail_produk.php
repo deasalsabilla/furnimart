@@ -70,7 +70,7 @@
                                     <a class="nav-link" href="belanja.php">Belanja</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="contact.html">Hubungi Kami</a>
+                                    <a class="nav-link" href="contact.php">Hubungi Kami</a>
                                 </li>
                             </ul>
                         </div>
