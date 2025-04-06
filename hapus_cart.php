@@ -1,19 +1,23 @@
 <?php
+include 'admin/koneksi.php';
 session_start();
-include 'admin/koneksi.php'; // Pastikan file koneksi ke database
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id_pesanan = $_POST['id_pesanan'];
+if (!isset($_SESSION['id_user'])) {
+  echo "<script>alert('Silakan login terlebih dahulu!'); window.location='login.php';</script>";
+  exit;
+}
 
-    // Hapus produk dari keranjang (pastikan tabel keranjang sesuai)
-    $query = "DELETE FROM tb_pesanan WHERE id_pesanan = '$id_pesanan'";
-    $result = mysqli_query($koneksi, $query);
+if (isset($_GET['id_pesanan'])) {
+  $id_pesanan = $_GET['id_pesanan'];
+  $query = "DELETE FROM tb_pesanan WHERE id_pesanan = '$id_pesanan'";
+  $result = mysqli_query($koneksi, $query);
 
-    if ($result) {
-        header("Location: cart.php"); // Redirect kembali ke halaman cart
-        exit();
-    } else {
-        echo "Gagal menghapus produk.";
-    }
+  if ($result) {
+    echo "<script>alert('Item berhasil dihapus dari keranjang'); window.location='cart.php';</script>";
+  } else {
+    echo "Gagal menghapus: " . mysqli_error($koneksi);
+  }
+} else {
+  echo "<script>alert('ID pesanan tidak ditemukan'); window.location='keranjang.php';</script>";
 }
 ?>

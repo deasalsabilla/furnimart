@@ -174,13 +174,11 @@ WHERE u.id_user = '$id_user'";
                       <h5>Rp. <?php echo number_format($row['total'], 0, ',', '.'); ?></h5>
                     </td>
                     <td>
-                      <form action="hapus_cart.php" method="POST" style="display:inline;">
-                        <input type="hidden" name="id_pesanan" value="<?php echo $row['id_pesanan']; ?>">
-                        <button type="submit" class="btn btn-danger btn-sm">
-                          <i class="ti-close"></i>
-                        </button>
-                      </form>
+                      <a href="hapus_cart.php?id_pesanan=<?php echo $row['id_pesanan']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus item ini?');">
+                        <i class="ti-close"></i>
+                      </a>
                     </td>
+
                   </tr>
                 <?php } ?>
 
