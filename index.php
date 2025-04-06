@@ -245,7 +245,7 @@
                                 ?>
                                     <div class="col-lg-3 col-sm-6">
                                         <div class="single_product_item">
-                                            <img src="admin/produk_img/<?= htmlspecialchars($gambar) ?>" alt="<?= htmlspecialchars($nama) ?>">
+                                            <img src="admin/produk_img/<?= htmlspecialchars($gambar) ?>" alt="<?= htmlspecialchars($nama) ?>" style="width: 265px; height: 250px; object-fit: cover;">
                                             <div class="single_product_text">
                                                 <h4><?= htmlspecialchars($nama) ?></h4>
                                                 <h3>Rp. <?= $harga ?></h3>
